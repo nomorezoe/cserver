@@ -1,0 +1,35 @@
+{
+  "client_id": "test",
+  "prompt": {
+    "2": {
+      "inputs": {
+        "image": "ComfyUI_00021_.png",
+        "upload": "image"
+      },
+      "class_type": "LoadImage"
+    },
+    "3": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "4",
+          0
+        ]
+      },
+      "class_type": "SaveImage"
+    },
+    "4": {
+      "inputs": {
+        "upscale_method": "nearest-exact",
+        "width": 2048,
+        "height": 2048,
+        "crop": "disabled",
+        "image": [
+          "2",
+          0
+        ]
+      },
+      "class_type": "ImageScale"
+    }
+  }
+}
