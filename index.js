@@ -41,7 +41,7 @@ app.listen(port, () => {
 
 app.get('/server', (req, res) => {
     res.json({
-        "ip": "ws://13.201.74.54:8188"
+        "ip": "ws://54.209.44.173:8188"
     });
 })
 
