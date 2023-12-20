@@ -42,6 +42,7 @@ app.listen(port, () => {
 app.get('/server', (req, res) => {
     res.json({
         "ip": "ws://54.209.44.173:8188"
+        //"ip": "ws://127.0.0.1:8188"
     });
 })
 
@@ -86,37 +87,28 @@ app.post('/render', (req, res) => {
     //console.log(req);
 
     var cfg = req.body.cfg;
-    var model = req.body.model;
-    var clipskip = req.body.clipskip;
-    var lora = req.body.lora;
     var prompt = req.body.prompt;
 
-    var vae = (req.body.vae == 1) ? 1 : 0;
     var sampleSteps = req.body.sampleSteps;
     var scheduler = req.body.scheduler;
-    var inpaintStrength = req.body.inpaintStrength;
+    var sampler = req.body.sampler;
 
     var depthStrength = req.body.depthStrength
     var poseStrength = req.body.poseStrength
 
-    var controlnetModlel = req.body.controlnetModlel
     var session = req.body.session;
 
     //add style
-    var usestyle = 0;
-    var style = "non_style";
-    if (req.body.usestyle != undefined) {
-        usestyle = (req.body.usestyle == 1) ? 1 : 0;
-    }
-    if (req.body.style != undefined) {
-        style = req.body.style;
-    }
+    style = req.body.style;
     //
 
-
-
-
-    //console.log("session====" + session);
+    console.log("style====" + style);
+    console.log("cfg====" + cfg);
+    console.log("sampleSteps====" + sampleSteps);
+    console.log("scheduler====" + scheduler);
+    console.log("sampler====" + sampler);
+    console.log("depthStrength====" + depthStrength);
+    console.log("poseStrength====" + poseStrength);
 
     var rawImg = req.files.imageByteArray.data;
 
@@ -128,7 +120,7 @@ app.post('/render', (req, res) => {
     var buffer = Buffer.from(rawImg, "base64");
     fs.writeFile(imageLocation, buffer, { flag: "w" }, function (err) {
         if (err == null) {
-            generate(session, imageFileName, prompt, responseCallBack);
+            generate(session, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
         }
         else {
             console.log("err" + err);
@@ -146,13 +138,22 @@ app.post('/render', (req, res) => {
 
 });
 
-function generate(session, imageFileName, prompt, responseCallBack) {
+function generate(session, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
     const data = readFileSync('./pipeline/workflow_generate_api.json');
 
     let json = JSON.parse(data);
     json["client_id"] = session;
     json["prompt"]["2"]["inputs"]["image"] = imageFileName;
-    json["prompt"]["13"]["inputs"]["text"] = prompt;
+    json["prompt"]["19"]["inputs"]["text_positive"] = prompt;
+    json["prompt"]["19"]["inputs"]["style"] = style;
+
+    json["prompt"]["6"]["inputs"]["steps"] = parseInt(sampleSteps);
+    json["prompt"]["6"]["inputs"]["cfg"] = parseInt(cfg);
+    json["prompt"]["6"]["inputs"]["sampler_name"] = sampler;
+    json["prompt"]["6"]["inputs"]["scheduler"] = scheduler;
+
+    json["prompt"]["5"]["inputs"]["strength"] = parseFloat(depthStrength);
+    json["prompt"]["18"]["inputs"]["strength"] = parseFloat(poseStrength);
 
     console.log("imageFileName" + imageFileName);
     console.log("jsonstring" + JSON.stringify(json));
