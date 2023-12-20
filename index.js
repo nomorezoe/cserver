@@ -113,6 +113,7 @@ app.post('/render', (req, res) => {
     console.log("sampler====" + sampler);
     console.log("depthStrength====" + depthStrength);
     console.log("poseStrength====" + poseStrength);
+    console.log("model====" + model);
 
     var rawImg = req.files.imageByteArray.data;
 
@@ -161,6 +162,7 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
     json["prompt"]["18"]["inputs"]["strength"] = parseFloat(poseStrength);
 
     if(model == "realistic_vision_v6"){
+        console.log("is sd1.5");
         json["prompt"]["17"]["inputs"]["control_net_name"]="control_openpose-fp16.safetensors";
         json["prompt"]["4"]["inputs"]["control_net_name"]="control_depth-fp16.safetensors";
     }
