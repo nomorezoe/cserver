@@ -85,7 +85,10 @@ app.post('/upscale', (req, res) => {
 app.post('/render', (req, res) => {
     // Get the file that was set to our field named "image"
     //console.log(req);
-
+    var model = "dynavisionXL";
+    if(req.body.model != undefined){
+        model = req.body.model
+    }
     var cfg = req.body.cfg;
     var prompt = req.body.prompt;
 
@@ -97,6 +100,7 @@ app.post('/render', (req, res) => {
     var poseStrength = req.body.poseStrength
 
     var session = req.body.session;
+
 
     //add style
     style = req.body.style;
@@ -120,7 +124,7 @@ app.post('/render', (req, res) => {
     var buffer = Buffer.from(rawImg, "base64");
     fs.writeFile(imageLocation, buffer, { flag: "w" }, function (err) {
         if (err == null) {
-            generate(session, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
+            generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
         }
         else {
             console.log("err" + err);
@@ -138,11 +142,12 @@ app.post('/render', (req, res) => {
 
 });
 
-function generate(session, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
+function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
     const data = readFileSync('./pipeline/workflow_generate_api.json');
 
     let json = JSON.parse(data);
     json["client_id"] = session;
+    json["prompt"]["7"]["inputs"]["imckpt_nameage"] = model + ".safetensors";
     json["prompt"]["2"]["inputs"]["image"] = imageFileName;
     json["prompt"]["19"]["inputs"]["text_positive"] = prompt;
     json["prompt"]["19"]["inputs"]["style"] = style;
