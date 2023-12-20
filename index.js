@@ -160,6 +160,11 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
     json["prompt"]["5"]["inputs"]["strength"] = parseFloat(depthStrength);
     json["prompt"]["18"]["inputs"]["strength"] = parseFloat(poseStrength);
 
+    if(model == "realistic_vision_v6"){
+        json["prompt"]["17"]["inputs"]["control_net_name"]="control_openpose-fp16.safetensors";
+        json["prompt"]["4"]["inputs"]["control_net_name"]="control_depth-fp16.safetensors";
+    }
+
     console.log("imageFileName" + imageFileName);
     console.log("jsonstring" + JSON.stringify(json));
 
