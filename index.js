@@ -49,6 +49,9 @@ app.get('/server', (req, res) => {
 app.post('/upscale', (req, res) => {
     var imageFileName = req.body.file;
     var session = req.body.session;
+    var denoiseValue = req.body.denoisevalue;
+
+    console.log("denoiseValue:" + denoiseValue);
 
     //var splits = imageFileName.split("/");
     //imageFileName = splits[splits.length-1];
@@ -101,6 +104,8 @@ app.post('/render', (req, res) => {
 
     var session = req.body.session;
 
+    var pretext = req.body.pretext;
+    var negtext = req.body.negtext;
 
     //add style
     style = req.body.style;
@@ -114,6 +119,9 @@ app.post('/render', (req, res) => {
     console.log("depthStrength====" + depthStrength);
     console.log("poseStrength====" + poseStrength);
     console.log("model====" + model);
+
+    console.log("pretext====" + pretext);
+    console.log("negtext====" + negtext);
 
     var rawImg = req.files.imageByteArray.data;
 
@@ -148,7 +156,7 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
 
     let json = JSON.parse(data);
     json["client_id"] = session;
-    json["prompt"]["7"]["inputs"]["imckpt_nameage"] = model + ".safetensors";
+    json["prompt"]["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
     json["prompt"]["2"]["inputs"]["image"] = imageFileName;
     json["prompt"]["19"]["inputs"]["text_positive"] = prompt;
     json["prompt"]["19"]["inputs"]["style"] = style;
