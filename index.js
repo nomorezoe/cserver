@@ -151,6 +151,10 @@ app.post('/render', (req, res) => {
 
 });
 
+function  isSD15Model(model){
+    return model == "realistic_vision_v6" || model == "Deliberate_v5"||model == "dreamshaper";
+}
+
 function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
     const data = readFileSync('./pipeline/workflow_generate_api.json');
 
@@ -169,7 +173,7 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
     json["prompt"]["5"]["inputs"]["strength"] = parseFloat(depthStrength);
     json["prompt"]["18"]["inputs"]["strength"] = parseFloat(poseStrength);
 
-    if(model == "realistic_vision_v6"){
+    if(isSD15Model(model)){
         console.log("is sd1.5");
         json["prompt"]["17"]["inputs"]["control_net_name"]="control_openpose-fp16.safetensors";
         json["prompt"]["4"]["inputs"]["control_net_name"]="control_depth-fp16.safetensors";
