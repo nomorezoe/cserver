@@ -58,8 +58,8 @@ async function processUpscale(file,res){
             var jsonSettings = JSON.parse(jsonString);
             
             var model = jsonSettings["7"]["inputs"]["ckpt_name"];
-            var prompt = jsonSettings["prompt"]["19"]["inputs"]["text_positive"];
-            var style = jsonSettings["prompt"]["19"]["inputs"]["style"];
+            var prompt = jsonSettings["19"]["inputs"]["text_positive"];
+            var style = jsonSettings["19"]["inputs"]["style"];
     
             
             const data = readFileSync('./pipeline/workflow_upscale_api_denoise.json');
