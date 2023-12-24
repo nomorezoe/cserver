@@ -48,50 +48,53 @@ app.get('/server', (req, res) => {
 })
 
 async function processUpscale(file,res){
-    const tags = await ExifReader.load(file);
-    var model = "dynavisionXL.safetensors";
-
-    if(tags.prompt && tags.prompt.value){
-        var jsonString = tags.prompt.value;
-        var jsonSettings = JSON.parse(jsonString);
-        
-        var model = jsonSettings["7"]["inputs"]["ckpt_name"];
-        var prompt = jsonSettings["prompt"]["19"]["inputs"]["text_positive"];
-        var style = jsonSettings["prompt"]["19"]["inputs"]["style"];
-
-        
-        const data = readFileSync('./pipeline/workflow_upscale_api_denoise.json');
-        let json = JSON.parse(data);
-        json["client_id"] = session;
-        json["prompt"]["2"]["inputs"]["image"] = "../output/" + imageFileName;
-        json["prompt"]["6"]["inputs"]["ckpt_name"] = model;
-
-        json["prompt"]["12"]["inputs"]["text_positive"] = prompt;
-        json["prompt"]["12"]["inputs"]["style"] = style;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://127.0.0.1:8188/prompt");
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhr.send(JSON.stringify(json));
-
-    xhr.responseType = "json";
-    xhr.onload = () => {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            const data = xhr.responseText;
-            //console.log(xhr);
-            res.json({
-                success: true,
-                msg: "success",
-                data: data
-            })
-        } else {
-            res.json({
-                success: false,
-                msg: "error" + xhr.status,
-            });
+    fs.readFile(file, (err, data)=>{
+        const tags =  ExifReader.load(data);
+        var model = "dynavisionXL.safetensors";
+    
+        if(tags.prompt && tags.prompt.value){
+            var jsonString = tags.prompt.value;
+            var jsonSettings = JSON.parse(jsonString);
+            
+            var model = jsonSettings["7"]["inputs"]["ckpt_name"];
+            var prompt = jsonSettings["prompt"]["19"]["inputs"]["text_positive"];
+            var style = jsonSettings["prompt"]["19"]["inputs"]["style"];
+    
+            
+            const data = readFileSync('./pipeline/workflow_upscale_api_denoise.json');
+            let json = JSON.parse(data);
+            json["client_id"] = session;
+            json["prompt"]["2"]["inputs"]["image"] = "../output/" + imageFileName;
+            json["prompt"]["6"]["inputs"]["ckpt_name"] = model;
+    
+            json["prompt"]["12"]["inputs"]["text_positive"] = prompt;
+            json["prompt"]["12"]["inputs"]["style"] = style;
+    
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://127.0.0.1:8188/prompt");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.send(JSON.stringify(json));
+    
+        xhr.responseType = "json";
+        xhr.onload = () => {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                const data = xhr.responseText;
+                //console.log(xhr);
+                res.json({
+                    success: true,
+                    msg: "success",
+                    data: data
+                })
+            } else {
+                res.json({
+                    success: false,
+                    msg: "error" + xhr.status,
+                });
+            }
+        };
         }
-    };
-    }
+    });
+    
 }
 app.post('/upscale', (req, res) => {
     var imageFileName = req.body.file;
