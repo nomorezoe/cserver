@@ -10,7 +10,8 @@
         "express-fileupload": "^1.4.0",
         "socket.io": "^4.1.2",
         "uuid": "^9.0.1",
-        "xmlhttprequest":"1.8.0"
+        "xmlhttprequest":"1.8.0",
+        "exifreader":"4.19.1"
     },
     "scripts": {
         "start": "node index.js"

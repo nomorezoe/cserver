@@ -12,6 +12,7 @@ const bodyParser = require('body-parser');
 var timeout = require('connect-timeout')
 const { readFileSync } = require('fs');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const ExifReader = require('exifreader');
 
 
 app.use(
@@ -46,20 +47,27 @@ app.get('/server', (req, res) => {
     });
 })
 
-app.post('/upscale', (req, res) => {
-    var imageFileName = req.body.file;
-    var session = req.body.session;
-    var denoiseValue = req.body.denoisevalue;
+async function processUpscale(file,res){
+    const tags = await ExifReader.load(file);
+    var model = "dynavisionXL.safetensors";
 
-    console.log("denoiseValue:" + denoiseValue);
+    if(tags.prompt && tags.prompt.value){
+        var jsonString = tags.prompt.value;
+        var jsonSettings = JSON.parse(jsonString);
+        
+        var model = jsonSettings["7"]["inputs"]["ckpt_name"];
+        var prompt = jsonSettings["prompt"]["19"]["inputs"]["text_positive"];
+        var style = jsonSettings["prompt"]["19"]["inputs"]["style"];
 
-    //var splits = imageFileName.split("/");
-    //imageFileName = splits[splits.length-1];
+        
+        const data = readFileSync('./pipeline/workflow_upscale_api_denoise.json');
+        let json = JSON.parse(data);
+        json["client_id"] = session;
+        json["prompt"]["2"]["inputs"]["image"] = "../output/" + imageFileName;
+        json["prompt"]["6"]["inputs"]["ckpt_name"] = model;
 
-    const data = readFileSync('./pipeline/workflow_upscale_api.json');
-    let json = JSON.parse(data);
-    json["client_id"] = session;
-    json["prompt"]["2"]["inputs"]["image"] = "../output/" + imageFileName;
+        json["prompt"]["12"]["inputs"]["text_positive"] = prompt;
+        json["prompt"]["12"]["inputs"]["style"] = style;
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "http://127.0.0.1:8188/prompt");
@@ -70,7 +78,7 @@ app.post('/upscale', (req, res) => {
     xhr.onload = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const data = xhr.responseText;
-            console.log(xhr);
+            //console.log(xhr);
             res.json({
                 success: true,
                 msg: "success",
@@ -83,6 +91,24 @@ app.post('/upscale', (req, res) => {
             });
         }
     };
+    }
+}
+app.post('/upscale', (req, res) => {
+    var imageFileName = req.body.file;
+    var session = req.body.session;
+    var denoiseValue = req.body.denoisevalue;
+    console.log("denoiseValue:" + denoiseValue);
+
+    console.log("imageFileName"+imageFileName);
+
+    var filePath = '../fileserver/output/'+imageFileName;
+    processUpscale(filePath, res);
+
+    
+
+    //var splits = imageFileName.split("/");
+    //imageFileName = splits[splits.length-1];
+
 })
 
 app.post('/render', (req, res) => {
