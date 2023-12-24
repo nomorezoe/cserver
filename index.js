@@ -47,7 +47,7 @@ app.get('/server', (req, res) => {
     });
 })
 
-async function processUpscale(file,res){
+async function processUpscale(file, session, res){
     fs.readFile(file, (err, data)=>{
         const tags =  ExifReader.load(data);
         var model = "dynavisionXL.safetensors";
@@ -106,7 +106,7 @@ app.post('/upscale', (req, res) => {
     console.log("imageFileName"+imageFileName);
 
     var filePath = __dirname + '/../fileserver/output/'+imageFileName;
-    processUpscale(filePath, res);
+    processUpscale(filePath, session, res);
 
     
 
