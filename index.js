@@ -47,6 +47,11 @@ app.get('/server', (req, res) => {
     });
 })
 
+function getRandomInt(max) {
+    return Math.floor(Math.random() * (max-1)) + 1;
+  }
+  
+
 async function processUpscale(file, imageFileName, session, res){
     fs.readFile(file, (err, data)=>{
         const tags =  ExifReader.load(data);
@@ -70,6 +75,8 @@ async function processUpscale(file, imageFileName, session, res){
     
             json["prompt"]["12"]["inputs"]["text_positive"] = prompt;
             json["prompt"]["12"]["inputs"]["style"] = style;
+
+            json["prompt"]["7"]["inputs"]["seed"] = getRandomInt(4294967294);
     
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "http://127.0.0.1:8188/prompt");
@@ -190,6 +197,7 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
 
     let json = JSON.parse(data);
     json["client_id"] = session;
+    json["prompt"]["6"]["inputs"]["seed"] = getRandomInt(4294967294);
     json["prompt"]["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
     json["prompt"]["2"]["inputs"]["image"] = imageFileName;
     json["prompt"]["19"]["inputs"]["text_positive"] = prompt;
