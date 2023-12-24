@@ -101,7 +101,7 @@ app.post('/upscale', (req, res) => {
 
     console.log("imageFileName"+imageFileName);
 
-    var filePath = '../fileserver/output/'+imageFileName;
+    var filePath = '/../fileserver/output/'+imageFileName;
     processUpscale(filePath, res);
 
     
