@@ -121,6 +121,33 @@ app.post('/upscale', (req, res) => {
     //imageFileName = splits[splits.length-1];
 
 })
+app.post('/inpaint', (req, res) => {
+    var rawImg = req.files.imageByteArray.data;
+
+    var session = req.body.session;
+    var reqFile = req.body.file;
+    var reqPrompt = req.body.prompt;
+
+    var dirpath = __dirname + '/../fileserver/input/';
+    var imgname = uuidv4();
+    var imageFileName = imgname + '.png';
+    var imageLocation = dirpath + imageFileName;
+
+    var buffer = Buffer.from(rawImg, "base64");
+    fs.writeFile(imageLocation, buffer, { flag: "w" }, function (err) {
+        if (err == null) {
+            //session, prompt, filename, maskfilename, res
+            inpaint(session,reqPrompt,reqFile,  imageFileName, res);
+        }
+        else {
+            res.json({
+                success: false,
+                msg: "image failed",
+            })
+        }
+    })
+
+});
 
 app.post('/render', (req, res) => {
     // Get the file that was set to our field named "image"
@@ -233,7 +260,9 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
             responseCallBack({
                 success: true,
                 msg: "success",
-                data: data
+                data: data,
+                steps : 4,
+                progress: 1
             })
         } else {
             responseCallBack({
@@ -244,5 +273,59 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
         }
     };
 
+}
+
+function inpaint(session, prompt, filename, maskfilename, res){
+    var filePath = __dirname + '/../fileserver/output/'+filename;
+    console.log("filepath" + filePath);
+    fs.readFile(filePath, (err, data)=>{
+        const tags =  ExifReader.load(data);
+        var model = "dynavisionXL.safetensors";
+    
+        if(tags.prompt && tags.prompt.value){
+            var jsonString = tags.prompt.value;
+            //console.log(jsonString);
+            var jsonSettings = JSON.parse(jsonString);
+            
+            var model = jsonSettings["7"]["inputs"]["ckpt_name"];
+            //var prompt = jsonSettings["19"]["inputs"]["text_positive"];
+            //var style = jsonSettings["19"]["inputs"]["style"];
+
+            const data = readFileSync('./pipeline/workflow_inpaint_api.json');
+
+            let json = JSON.parse(data);
+            json["client_id"] = session;
+
+            json["prompt"]["1"]["inputs"]["image"] = maskfilename;
+            json["prompt"]["2"]["inputs"]["image"] = filename;
+            json["prompt"]["13"]["inputs"]["text"] = prompt;
+            json["prompt"]["11"]["inputs"]["ckpt_name"] = model;
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:8188/prompt");
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send(JSON.stringify(json));
+
+            xhr.responseType = "json";
+            xhr.onload = () => {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    const data = xhr.responseText;
+
+                    res.json({
+                        success: true,
+                        msg: "success",
+                        data: data
+                    })
+                } else {
+                    res.json({
+                        success: false,
+                        msg: "error" + xhr.status,
+                    });
+                    console.log(`Error: ${xhr.status}`);
+                }
+            };
+        }
+    })
+    
 }
 
