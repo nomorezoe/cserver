@@ -42,8 +42,8 @@ app.listen(port, () => {
 
 app.get('/server', (req, res) => {
     res.json({
-        "ip": "ws://54.209.44.173:8188"
-        //"ip": "ws://127.0.0.1:8188"
+        //"ip": "ws://54.209.44.173:8188"
+        "ip": "ws://127.0.0.1:8188"
     });
 })
 
@@ -297,7 +297,7 @@ function inpaint(session, prompt, filename, maskfilename, res){
             json["client_id"] = session;
 
             json["prompt"]["1"]["inputs"]["image"] = maskfilename;
-            json["prompt"]["2"]["inputs"]["image"] = "/../output/"+filename;
+            json["prompt"]["2"]["inputs"]["image"] = filename;
             json["prompt"]["13"]["inputs"]["text"] = prompt;
             json["prompt"]["11"]["inputs"]["ckpt_name"] = model;
 
