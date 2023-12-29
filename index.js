@@ -260,9 +260,7 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
             responseCallBack({
                 success: true,
                 msg: "success",
-                data: data,
-                steps : 4,
-                progress: 1
+                data: data
             })
         } else {
             responseCallBack({
@@ -314,7 +312,9 @@ function inpaint(session, prompt, filename, maskfilename, res){
                     res.json({
                         success: true,
                         msg: "success",
-                        data: data
+                        data: data,
+                        steps : 14,
+                        progress: 1
                     })
                 } else {
                     res.json({
