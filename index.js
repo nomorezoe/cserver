@@ -284,7 +284,7 @@ function inpaint(session, prompt, filename, maskfilename, res){
     
         if(tags.prompt && tags.prompt.value){
             var jsonString = tags.prompt.value;
-            //console.log(jsonString);
+            console.log(jsonString);
             var jsonSettings = JSON.parse(jsonString);
             
             var model = jsonSettings["7"]["inputs"]["ckpt_name"];
