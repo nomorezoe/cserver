@@ -313,7 +313,7 @@ function inpaint(session, prompt, filename, maskfilename, res){
                         success: true,
                         msg: "success",
                         data: data,
-                        steps : 14,
+                        steps : 15,
                         progress: 1
                     })
                 } else {

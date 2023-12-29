@@ -2,170 +2,183 @@
     "client_id": "test",
     "prompt": {
         "1": {
-            "inputs": {
-                "image": "20ac1ec2-babf-4099-b02c-456998eec060 (1).png",
-                "upload": "image"
-            },
-            "class_type": "LoadImage"
+          "inputs": {
+            "image": "20ac1ec2-babf-4099-b02c-456998eec060 (1).png",
+            "upload": "image"
+          },
+          "class_type": "LoadImage"
         },
         "2": {
-            "inputs": {
-                "image": "ComfyUI_00044_ (1).png",
-                "upload": "image"
-            },
-            "class_type": "LoadImage"
+          "inputs": {
+            "image": "ComfyUI_00044_ (1).png",
+            "upload": "image"
+          },
+          "class_type": "LoadImage"
         },
         "5": {
-            "inputs": {
-                "width": 1000,
-                "height": 1000,
-                "x": 250,
-                "y": 0,
-                "image": [
-                    "18",
-                    0
-                ]
-            },
-            "class_type": "ImageCrop"
+          "inputs": {
+            "width": 1000,
+            "height": 1000,
+            "x": 250,
+            "y": 0,
+            "image": [
+              "18",
+              0
+            ]
+          },
+          "class_type": "ImageCrop"
         },
         "9": {
-            "inputs": {
-                "grow_mask_by": 1,
-                "pixels": [
-                    "20",
-                    0
-                ],
-                "vae": [
-                    "11",
-                    2
-                ],
-                "mask": [
-                    "10",
-                    0
-                ]
-            },
-            "class_type": "VAEEncodeForInpaint"
+          "inputs": {
+            "grow_mask_by": 0,
+            "pixels": [
+              "20",
+              0
+            ],
+            "vae": [
+              "11",
+              2
+            ],
+            "mask": [
+              "21",
+              0
+            ]
+          },
+          "class_type": "VAEEncodeForInpaint"
         },
         "10": {
-            "inputs": {
-                "channel": "green",
-                "image": [
-                    "19",
-                    0
-                ]
-            },
-            "class_type": "ImageToMask"
+          "inputs": {
+            "channel": "green",
+            "image": [
+              "19",
+              0
+            ]
+          },
+          "class_type": "ImageToMask"
         },
         "11": {
-            "inputs": {
-                "ckpt_name": "dynavisionXL.safetensors"
-            },
-            "class_type": "CheckpointLoaderSimple"
+          "inputs": {
+            "ckpt_name": "dynavisionXL.safetensors"
+          },
+          "class_type": "CheckpointLoaderSimple"
         },
         "12": {
-            "inputs": {
-                "seed": 861854571503836,
-                "steps": 30,
-                "cfg": 8,
-                "sampler_name": "euler",
-                "scheduler": "normal",
-                "denoise": 1,
-                "model": [
-                    "11",
-                    0
-                ],
-                "positive": [
-                    "13",
-                    0
-                ],
-                "negative": [
-                    "14",
-                    0
-                ],
-                "latent_image": [
-                    "9",
-                    0
-                ]
-            },
-            "class_type": "KSampler"
+          "inputs": {
+            "seed": 138035201487165,
+            "steps": 30,
+            "cfg": 8,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "denoise": 1,
+            "model": [
+              "11",
+              0
+            ],
+            "positive": [
+              "13",
+              0
+            ],
+            "negative": [
+              "14",
+              0
+            ],
+            "latent_image": [
+              "9",
+              0
+            ]
+          },
+          "class_type": "KSampler"
         },
         "13": {
-            "inputs": {
-                "text": "a lady with red shoes",
-                "clip": [
-                    "11",
-                    1
-                ]
-            },
-            "class_type": "CLIPTextEncode"
+          "inputs": {
+            "text": "a lady with red shoes",
+            "clip": [
+              "11",
+              1
+            ]
+          },
+          "class_type": "CLIPTextEncode"
         },
         "14": {
-            "inputs": {
-                "text": "(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) horror",
-                "clip": [
-                    "11",
-                    1
-                ]
-            },
-            "class_type": "CLIPTextEncode"
+          "inputs": {
+            "text": "(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) horror",
+            "clip": [
+              "11",
+              1
+            ]
+          },
+          "class_type": "CLIPTextEncode"
         },
         "16": {
-            "inputs": {
-                "samples": [
-                    "12",
-                    0
-                ],
-                "vae": [
-                    "11",
-                    2
-                ]
-            },
-            "class_type": "VAEDecode"
+          "inputs": {
+            "samples": [
+              "12",
+              0
+            ],
+            "vae": [
+              "11",
+              2
+            ]
+          },
+          "class_type": "VAEDecode"
         },
         "17": {
-            "inputs": {
-                "filename_prefix": "ComfyUI",
-                "images": [
-                    "16",
-                    0
-                ]
-            },
-            "class_type": "SaveImage"
+          "inputs": {
+            "filename_prefix": "ComfyUI",
+            "images": [
+              "16",
+              0
+            ]
+          },
+          "class_type": "SaveImage"
         },
         "18": {
-            "inputs": {
-                "image": [
-                    "1",
-                    0
-                ]
-            },
-            "class_type": "ImageInvert"
+          "inputs": {
+            "image": [
+              "1",
+              0
+            ]
+          },
+          "class_type": "ImageInvert"
         },
         "19": {
-            "inputs": {
-                "upscale_method": "nearest-exact",
-                "width": 2048,
-                "height": 2048,
-                "crop": "disabled",
-                "image": [
-                    "5",
-                    0
-                ]
-            },
-            "class_type": "ImageScale"
+          "inputs": {
+            "upscale_method": "nearest-exact",
+            "width": 2048,
+            "height": 2048,
+            "crop": "disabled",
+            "image": [
+              "5",
+              0
+            ]
+          },
+          "class_type": "ImageScale"
         },
         "20": {
-            "inputs": {
-                "upscale_method": "nearest-exact",
-                "width": 2048,
-                "height": 2048,
-                "crop": "disabled",
-                "image": [
-                    "2",
-                    0
-                ]
-            },
-            "class_type": "ImageScale"
+          "inputs": {
+            "upscale_method": "nearest-exact",
+            "width": 2048,
+            "height": 2048,
+            "crop": "disabled",
+            "image": [
+              "2",
+              0
+            ]
+          },
+          "class_type": "ImageScale"
+        },
+        "21": {
+          "inputs": {
+            "left": 6,
+            "top": 6,
+            "right": 6,
+            "bottom": 6,
+            "mask": [
+              "10",
+              0
+            ]
+          },
+          "class_type": "FeatherMask"
         }
-    }
+      }
 }
