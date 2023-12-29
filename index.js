@@ -171,6 +171,12 @@ app.post('/render', (req, res) => {
     var pretext = req.body.pretext;
     var negtext = req.body.negtext;
 
+    var lockCharacter = req.body.lockCharacter == 1;
+    var charactor = "";
+    if(lockCharacter){
+        charactor = req.body.charactor;
+    }
+
     //add style
     style = req.body.style;
     //
@@ -197,7 +203,13 @@ app.post('/render', (req, res) => {
     var buffer = Buffer.from(rawImg, "base64");
     fs.writeFile(imageLocation, buffer, { flag: "w" }, function (err) {
         if (err == null) {
-            generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
+            if(lockCharacter){
+                var url = __dirname + '/../fileserver/output/' + charactor;
+                lockgenerate(session, url, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
+            }
+            else{
+                generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
+            }
         }
         else {
             console.log("err" + err);
@@ -224,6 +236,61 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
 
     let json = JSON.parse(data);
     json["client_id"] = session;
+    json["prompt"]["6"]["inputs"]["seed"] = getRandomInt(4294967294);
+    json["prompt"]["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
+    json["prompt"]["2"]["inputs"]["image"] = imageFileName;
+    json["prompt"]["19"]["inputs"]["text_positive"] = prompt;
+    json["prompt"]["19"]["inputs"]["style"] = style;
+
+    json["prompt"]["6"]["inputs"]["steps"] = parseInt(sampleSteps);
+    json["prompt"]["6"]["inputs"]["cfg"] = parseInt(cfg);
+    json["prompt"]["6"]["inputs"]["sampler_name"] = sampler;
+    json["prompt"]["6"]["inputs"]["scheduler"] = scheduler;
+
+    json["prompt"]["5"]["inputs"]["strength"] = parseFloat(depthStrength);
+    json["prompt"]["18"]["inputs"]["strength"] = parseFloat(poseStrength);
+
+    if(isSD15Model(model)){
+        console.log("is sd1.5");
+        json["prompt"]["17"]["inputs"]["control_net_name"]="control_openpose-fp16.safetensors";
+        json["prompt"]["4"]["inputs"]["control_net_name"]="control_depth-fp16.safetensors";
+    }
+
+    console.log("imageFileName" + imageFileName);
+    console.log("jsonstring" + JSON.stringify(json));
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:8188/prompt");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(JSON.stringify(json));
+
+    xhr.responseType = "json";
+    xhr.onload = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const data = xhr.responseText;
+
+            responseCallBack({
+                success: true,
+                msg: "success",
+                data: data
+            })
+        } else {
+            responseCallBack({
+                success: false,
+                msg: "error" + xhr.status,
+            });
+            console.log(`Error: ${xhr.status}`);
+        }
+    };
+
+}
+
+function lockgenerate(session, url, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
+    const data = readFileSync('./pipeline/workflow_generate_lock_api.json');
+
+    let json = JSON.parse(data);
+    json["client_id"] = session;
+    json["prompt"]["55"]["inputs"]["image"] = url;
     json["prompt"]["6"]["inputs"]["seed"] = getRandomInt(4294967294);
     json["prompt"]["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
     json["prompt"]["2"]["inputs"]["image"] = imageFileName;
