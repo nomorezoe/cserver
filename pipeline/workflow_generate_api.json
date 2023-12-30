@@ -1,204 +1,238 @@
 {   
     "client_id": "test",
     "prompt": {
-        "1": {
-          "inputs": {
-            "a": 6.28,
-            "bg_threshold": 0.1,
-            "resolution": 512,
-            "image": [
-              "2",
-              0
-            ]
-          },
-          "class_type": "MiDaS-DepthMapPreprocessor"
+      "1": {
+        "inputs": {
+          "a": 6.28,
+          "bg_threshold": 0.1,
+          "resolution": 512,
+          "image": [
+            "2",
+            0
+          ]
         },
-        "2": {
-          "inputs": {
-            "image": "8ce985d1-679a-4d42-81c2-d7f8cab3fd0e.png",
-            "upload": "image"
-          },
-          "class_type": "LoadImage"
+        "class_type": "MiDaS-DepthMapPreprocessor"
+      },
+      "2": {
+        "inputs": {
+          "image": "8ce985d1-679a-4d42-81c2-d7f8cab3fd0e.png",
+          "upload": "image"
         },
-        "3": {
-          "inputs": {
-            "images": [
-              "1",
-              0
-            ]
-          },
-          "class_type": "PreviewImage"
+        "class_type": "LoadImage"
+      },
+      "3": {
+        "inputs": {
+          "images": [
+            "1",
+            0
+          ]
         },
-        "4": {
-          "inputs": {
-            "control_net_name": "control-lora-depth-rank256.safetensors"
-          },
-          "class_type": "ControlNetLoader"
+        "class_type": "PreviewImage"
+      },
+      "4": {
+        "inputs": {
+          "control_net_name": "control-lora-depth-rank256.safetensors"
         },
-        "5": {
-          "inputs": {
-            "strength": 0.53,
-            "conditioning": [
-              "18",
-              0
-            ],
-            "control_net": [
-              "4",
-              0
-            ],
-            "image": [
-              "1",
-              0
-            ]
-          },
-          "class_type": "ControlNetApply"
+        "class_type": "ControlNetLoader"
+      },
+      "5": {
+        "inputs": {
+          "strength": 0.53,
+          "conditioning": [
+            "18",
+            0
+          ],
+          "control_net": [
+            "4",
+            0
+          ],
+          "image": [
+            "1",
+            0
+          ]
         },
-        "6": {
-          "inputs": {
-            "seed": 392113393274756,
-            "steps": 20,
-            "cfg": 7,
-            "sampler_name": "euler",
-            "scheduler": "normal",
-            "denoise": 1,
-            "model": [
-              "7",
-              0
-            ],
-            "positive": [
-              "5",
-              0
-            ],
-            "negative": [
-              "14",
-              0
-            ],
-            "latent_image": [
-              "9",
-              0
-            ]
-          },
-          "class_type": "KSampler"
+        "class_type": "ControlNetApply"
+      },
+      "6": {
+        "inputs": {
+          "seed": 59173353882905,
+          "steps": 20,
+          "cfg": 7,
+          "sampler_name": "euler",
+          "scheduler": "normal",
+          "denoise": 1,
+          "model": [
+            "20",
+            0
+          ],
+          "positive": [
+            "5",
+            0
+          ],
+          "negative": [
+            "14",
+            0
+          ],
+          "latent_image": [
+            "9",
+            0
+          ]
         },
-        "7": {
-          "inputs": {
-            "ckpt_name": "dynavisionXL.safetensors"
-          },
-          "class_type": "CheckpointLoaderSimple"
+        "class_type": "KSampler"
+      },
+      "7": {
+        "inputs": {
+          "ckpt_name": "dynavisionXL.safetensors"
         },
-        "9": {
-          "inputs": {
-            "width": 1024,
-            "height": 1024,
-            "batch_size": 4
-          },
-          "class_type": "EmptyLatentImage"
+        "class_type": "CheckpointLoaderSimple"
+      },
+      "9": {
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 4
         },
-        "11": {
-          "inputs": {
-            "samples": [
-              "6",
-              0
-            ],
-            "vae": [
-              "7",
-              2
-            ]
-          },
-          "class_type": "VAEDecode"
+        "class_type": "EmptyLatentImage"
+      },
+      "11": {
+        "inputs": {
+          "samples": [
+            "6",
+            0
+          ],
+          "vae": [
+            "7",
+            2
+          ]
         },
-        "12": {
-          "inputs": {
-            "filename_prefix": "ComfyUI",
-            "images": [
-              "11",
-              0
-            ]
-          },
-          "class_type": "SaveImage"
+        "class_type": "VAEDecode"
+      },
+      "12": {
+        "inputs": {
+          "filename_prefix": "ComfyUI",
+          "images": [
+            "11",
+            0
+          ]
         },
-        "13": {
-          "inputs": {
-            "text": [
-              "19",
-              0
-            ],
-            "clip": [
-              "7",
-              1
-            ]
-          },
-          "class_type": "CLIPTextEncode"
+        "class_type": "SaveImage"
+      },
+      "13": {
+        "inputs": {
+          "text": [
+            "19",
+            0
+          ],
+          "clip": [
+            "20",
+            1
+          ]
         },
-        "14": {
-          "inputs": {
-            "text": [
-              "19",
-              1
-            ],
-            "clip": [
-              "7",
-              1
-            ]
-          },
-          "class_type": "CLIPTextEncode"
+        "class_type": "CLIPTextEncode"
+      },
+      "14": {
+        "inputs": {
+          "text": [
+            "19",
+            1
+          ],
+          "clip": [
+            "20",
+            1
+          ]
         },
-        "15": {
-          "inputs": {
-            "detect_hand": "enable",
-            "detect_body": "enable",
-            "detect_face": "enable",
-            "resolution": 512,
-            "bbox_detector": "yolox_l.onnx",
-            "pose_estimator": "dw-ll_ucoco_384.onnx",
-            "image": [
-              "2",
-              0
-            ]
-          },
-          "class_type": "DWPreprocessor"
+        "class_type": "CLIPTextEncode"
+      },
+      "15": {
+        "inputs": {
+          "detect_hand": "enable",
+          "detect_body": "enable",
+          "detect_face": "enable",
+          "resolution": 512,
+          "bbox_detector": "yolox_l.onnx",
+          "pose_estimator": "dw-ll_ucoco_384.onnx",
+          "image": [
+            "2",
+            0
+          ]
         },
-        "16": {
-          "inputs": {
-            "images": [
-              "15",
-              0
-            ]
-          },
-          "class_type": "PreviewImage"
+        "class_type": "DWPreprocessor"
+      },
+      "16": {
+        "inputs": {
+          "images": [
+            "15",
+            0
+          ]
         },
-        "17": {
-          "inputs": {
-            "control_net_name": "thibaud_xl_openpose_256lora.safetensors"
-          },
-          "class_type": "ControlNetLoader"
+        "class_type": "PreviewImage"
+      },
+      "17": {
+        "inputs": {
+          "control_net_name": "thibaud_xl_openpose_256lora.safetensors"
         },
-        "18": {
-          "inputs": {
-            "strength": 1,
-            "conditioning": [
-              "13",
-              0
-            ],
-            "control_net": [
-              "17",
-              0
-            ],
-            "image": [
-              "15",
-              0
-            ]
-          },
-          "class_type": "ControlNetApply"
+        "class_type": "ControlNetLoader"
+      },
+      "18": {
+        "inputs": {
+          "strength": 1,
+          "conditioning": [
+            "13",
+            0
+          ],
+          "control_net": [
+            "17",
+            0
+          ],
+          "image": [
+            "15",
+            0
+          ]
         },
-        "19": {
-          "inputs": {
-            "text_positive": "a lady in the forest",
-            "text_negative": "(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) horror",
-            "style": "base",
-            "log_prompt": true
-          },
-          "class_type": "SDXLPromptStyler"
-        }
+        "class_type": "ControlNetApply"
+      },
+      "19": {
+        "inputs": {
+          "text_positive": "a lady in the forest",
+          "text_negative": "(worst quality, low quality, normal quality, lowres, low details, oversaturated, undersaturated, overexposed, underexposed, grayscale, bw, bad photo, bad photography, bad art:1.4), (watermark, signature, text font, username, error, logo, words, letters, digits, autograph, trademark, name:1.2), (blur, blurry, grainy), morbid, ugly, asymmetrical, mutated malformed, mutilated, poorly lit, bad shadow, draft, cropped, out of frame, cut off, censored, jpeg artifacts, out of focus, glitch, duplicate, (airbrushed, cartoon, anime, semi-realistic, cgi, render, blender, digital art, manga, amateur:1.3), (3D ,3D Game, 3D Game Scene, 3D Character:1.1), (bad hands, bad anatomy, bad body, bad face, bad teeth, bad arms, bad legs, deformities:1.3) horror",
+          "style": "base",
+          "log_prompt": true
+        },
+        "class_type": "SDXLPromptStyler"
+      },
+      "20": {
+        "inputs": {
+          "model": [
+            "7",
+            0
+          ],
+          "clip": [
+            "7",
+            1
+          ],
+          "lora_stack": [
+            "21",
+            0
+          ]
+        },
+        "class_type": "CR Apply LoRA Stack"
+      },
+      "21": {
+        "inputs": {
+          "switch_1": "On",
+          "lora_name_1": "Cinematic_Hollywood_Film_sdxl.safetensors",
+          "model_weight_1": 1.5,
+          "clip_weight_1": 1,
+          "switch_2": "On",
+          "lora_name_2": "SDXL1.0_Essenz-series-by-AI_Characters_Style_BetterPhotography-v1.2-'Skynet'.safetensors",
+          "model_weight_2": 1.5,
+          "clip_weight_2": 1,
+          "switch_3": "Off",
+          "lora_name_3": "None",
+          "model_weight_3": 1,
+          "clip_weight_3": 1
+        },
+        "class_type": "CR LoRA Stack"
       }
+    }
 }

@@ -91,7 +91,9 @@ async function processUpscale(file, imageFileName, session, res){
                 res.json({
                     success: true,
                     msg: "success",
-                    data: data
+                    data: data,
+                    steps : 10,
+                    progress: 1
                 })
             } else {
                 res.json({
@@ -272,7 +274,9 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
             responseCallBack({
                 success: true,
                 msg: "success",
-                data: data
+                data: data,
+                steps : 19,
+                progress: 1
             })
         } else {
             responseCallBack({
