@@ -331,7 +331,9 @@ function lockgenerate(session, url, model, style, cfg, sampleSteps, scheduler, s
             responseCallBack({
                 success: true,
                 msg: "success",
-                data: data
+                data: data,
+                steps : 22,
+                progress: 1
             })
         } else {
             responseCallBack({
