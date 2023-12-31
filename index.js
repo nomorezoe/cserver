@@ -313,6 +313,10 @@ function lockgenerate(session, url, model, style, cfg, sampleSteps, scheduler, s
         console.log("is sd1.5");
         json["prompt"]["17"]["inputs"]["control_net_name"]="control_openpose-fp16.safetensors";
         json["prompt"]["4"]["inputs"]["control_net_name"]="control_depth-fp16.safetensors";
+        
+        json["prompt"]["51"]["inputs"]["ipadapter_file"]="ip-adapter_sd15.bin";
+        json["prompt"]["54"]["inputs"]["clip_name"]="model_15.safetensors";
+    
     }
 
     console.log("imageFileName" + imageFileName);
