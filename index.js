@@ -210,7 +210,7 @@ app.post('/render', (req, res) => {
                 lockgenerate(session, url, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
             }
             else{
-                generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
+                generate(session, model, style, pretext, negtext, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack);
             }
         }
         else {
@@ -233,7 +233,7 @@ function  isSD15Model(model){
     return model == "realistic_vision_v6" || model == "Deliberate_v5"||model == "dreamshaper";
 }
 
-function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
+function generate(session, model, style, pretext, negtext, cfg, sampleSteps, scheduler, sampler, depthStrength, poseStrength, imageFileName, prompt, responseCallBack) {
     const data = readFileSync('./pipeline/workflow_generate_api.json');
 
     let json = JSON.parse(data);
@@ -241,7 +241,15 @@ function generate(session, model, style, cfg, sampleSteps, scheduler, sampler, d
     json["prompt"]["6"]["inputs"]["seed"] = getRandomInt(4294967294);
     json["prompt"]["7"]["inputs"]["ckpt_name"] = model + ".safetensors";
     json["prompt"]["2"]["inputs"]["image"] = imageFileName;
-    json["prompt"]["19"]["inputs"]["text_positive"] = prompt;
+    json["prompt"]["19"]["inputs"]["text_positive"] = pretext + " "+prompt;
+    if(negtext.trim().length != 0){
+        console.log("update neg");
+        json["prompt"]["19"]["inputs"]["text_negative"] = negtext;
+    }
+    else{
+        console.log("skip neg");
+    }
+    
     json["prompt"]["19"]["inputs"]["style"] = style;
 
     json["prompt"]["6"]["inputs"]["steps"] = parseInt(sampleSteps);
