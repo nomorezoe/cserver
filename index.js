@@ -67,7 +67,7 @@ async function processUpscale(file, imageFileName, session, res){
             var style = jsonSettings["19"]["inputs"]["style"];
     
             
-            const data = readFileSync('./pipeline/workflow_upscale_api_denoise.json');
+            const data = readFileSync('./pipeline/workflow_upscale_api.json');
             let json = JSON.parse(data);
             json["client_id"] = session;
             json["prompt"]["2"]["inputs"]["image"] = "../output/" + imageFileName;
