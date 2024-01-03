@@ -71,12 +71,12 @@ async function processUpscale(file, imageFileName, session, res){
             let json = JSON.parse(data);
             json["client_id"] = session;
             json["prompt"]["2"]["inputs"]["image"] = "../output/" + imageFileName;
-            json["prompt"]["6"]["inputs"]["ckpt_name"] = model;
+           // json["prompt"]["6"]["inputs"]["ckpt_name"] = model;
     
-            json["prompt"]["12"]["inputs"]["text_positive"] = prompt;
-            json["prompt"]["12"]["inputs"]["style"] = style;
+            // json["prompt"]["12"]["inputs"]["text_positive"] = prompt;
+            // json["prompt"]["12"]["inputs"]["style"] = style;
 
-            json["prompt"]["7"]["inputs"]["seed"] = getRandomInt(4294967294);
+            // json["prompt"]["7"]["inputs"]["seed"] = getRandomInt(4294967294);
     
         const xhr = new XMLHttpRequest();
         xhr.open("POST", "http://127.0.0.1:8188/prompt");
