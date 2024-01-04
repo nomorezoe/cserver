@@ -21,8 +21,8 @@
     "4": {
       "inputs": {
         "upscale_method": "nearest-exact",
-        "width": 2048,
-        "height": 2048,
+        "width": 1536,
+        "height": 1536,
         "crop": "disabled",
         "image": [
           "2",
