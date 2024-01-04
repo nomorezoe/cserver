@@ -363,7 +363,7 @@ function inpaint(session, prompt, filename, maskfilename, res){
     console.log("filepath" + filePath);
     fs.readFile(filePath, (err, data)=>{
         const tags =  ExifReader.load(data);
-        var model = "dynavisionXL.safetensors";
+        var model = "Deliberate_v5.safetensors";
     
         if(tags.prompt && tags.prompt.value){
             var jsonString = tags.prompt.value;
